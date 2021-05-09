@@ -2,7 +2,7 @@
   "name": "typescript-api-template",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "",
+  "repository": "https://github.com/RodolfoLemes/typescript-api-template.git",
   "author": "Rodolfo Lemes <rodolfo_fero@hotmail.com>",
   "license": "MIT",
   "scripts": {
