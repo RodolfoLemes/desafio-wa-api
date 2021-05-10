@@ -4,6 +4,7 @@ services:
   app:
     container_name: desafio-wa-api
     build: .
+    restart: unless-stopped
     command: npm run dev:server
     ports:
       - 3333:3333
@@ -13,6 +14,7 @@ services:
   postgresql:
     container_name: desafio-wa-postgresql
     image: postgres:13.2-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DATABASE: postgres
