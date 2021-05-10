@@ -29,6 +29,10 @@ class FakeLaboratoriesRepository implements ILaboratoriesRepository {
   public async findById(laboratoryId: string): Promise<Laboratory | undefined> {
     return this.laboratories.find(laboratory => laboratory.id === laboratoryId);
   }
+
+  public async findByName(name: string): Promise<Laboratory | undefined> {
+    return this.laboratories.find(laboratory => laboratory.name === name);
+  }
 }
 
 export default FakeLaboratoriesRepository;

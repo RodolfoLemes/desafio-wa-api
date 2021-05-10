@@ -1,7 +1,9 @@
+import Laboratory from '@modules/laboratories/entities/Laboratory';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -19,6 +21,9 @@ class Exam {
 
   @Column({ default: false })
   status: boolean;
+
+  @ManyToMany(() => Laboratory, laboratory => laboratory.exams)
+  laboratories: Laboratory[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

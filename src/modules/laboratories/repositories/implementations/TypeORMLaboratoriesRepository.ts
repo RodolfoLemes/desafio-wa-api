@@ -31,6 +31,14 @@ class TypeORMLaboratoriesRepository implements ILaboratoriesRepository {
 
     return laboratory;
   }
+
+  public async findByName(name: string): Promise<Laboratory | undefined> {
+    const laboratory = this.ormRepository.findOne({
+      where: { name },
+    });
+
+    return laboratory;
+  }
 }
 
 export default TypeORMLaboratoriesRepository;

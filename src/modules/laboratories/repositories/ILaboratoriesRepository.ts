@@ -5,4 +5,5 @@ export default interface ILaboratoriesRepository {
   create(data: ICreateLaboratoryDTO): Promise<Laboratory>;
   save(laboratory: Laboratory): Promise<Laboratory>;
   findById(laboratoryId: string): Promise<Laboratory | undefined>;
+  findByName(name: string): Promise<Laboratory | undefined>;
 }
