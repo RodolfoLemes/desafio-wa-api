@@ -1,3 +1,4 @@
+import pagination from '@modules/pagination/middlewares/pagination';
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
 import LaboratoriesController from '../controllers/LaboratoriesController';
@@ -15,6 +16,19 @@ router.post(
     },
   }),
   laboratoriesController.create,
+);
+
+router.get(
+  '/',
+  pagination,
+  celebrate({
+    [Segments.QUERY]: {
+      status: Joi.string().valid('true', 'false'),
+      limit: Joi.number(),
+      page: Joi.number(),
+    },
+  }),
+  laboratoriesController.list,
 );
 
 export default router;

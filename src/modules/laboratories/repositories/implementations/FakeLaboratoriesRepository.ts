@@ -1,3 +1,5 @@
+import IPaginationOptions from '@modules/pagination/interfaces/IPaginationOptions';
+import Pagination from '@modules/pagination';
 import { v4 as uuidv4 } from 'uuid';
 import Laboratory from '../../entities/Laboratory';
 import ILaboratoriesRepository from '../ILaboratoriesRepository';
@@ -32,6 +34,23 @@ class FakeLaboratoriesRepository implements ILaboratoriesRepository {
 
   public async findByName(name: string): Promise<Laboratory | undefined> {
     return this.laboratories.find(laboratory => laboratory.name === name);
+  }
+
+  public async findAllByStatus(
+    status: boolean,
+    { limit, page }: IPaginationOptions,
+  ): Promise<Pagination<Laboratory>> {
+    const foundLaboratories = this.laboratories.filter(
+      findWithdraw => findWithdraw.status === status,
+    );
+
+    const total = foundLaboratories.length;
+
+    return {
+      values: foundLaboratories.slice((page - 1) * limit, page * limit),
+      total,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 }
 

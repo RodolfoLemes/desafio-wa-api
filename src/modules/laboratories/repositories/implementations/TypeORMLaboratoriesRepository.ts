@@ -1,3 +1,5 @@
+import IPaginationOptions from '@modules/pagination/interfaces/IPaginationOptions';
+import Pagination from '@modules/pagination';
 import { Repository, getRepository } from 'typeorm';
 import Laboratory from '../../entities/Laboratory';
 import ICreateLaboratoryDTO from '../../dtos/ICreateLaboratoryDTO';
@@ -38,6 +40,28 @@ class TypeORMLaboratoriesRepository implements ILaboratoriesRepository {
     });
 
     return laboratory;
+  }
+
+  public async findAllByStatus(
+    status: boolean,
+    { limit, page }: IPaginationOptions,
+  ): Promise<Pagination<Laboratory>> {
+    const [laboratories, total] = await this.ormRepository.findAndCount({
+      where: {
+        status,
+      },
+      take: limit,
+      skip: (page - 1) * limit,
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    return {
+      values: laboratories,
+      total,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 }
 

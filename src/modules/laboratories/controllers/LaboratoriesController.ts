@@ -2,6 +2,7 @@ import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateLaboratoryService from '../services/CreateLaboratoryService';
+import ListLaboratoriesServices from '../services/ListLaboratoriesServices';
 
 export default class LaboratoriesController {
   async create(req: Request, res: Response): Promise<Response> {
@@ -14,5 +15,20 @@ export default class LaboratoriesController {
     });
 
     return res.status(201).json(classToClass(laboratory));
+  }
+
+  async list(req: Request, res: Response): Promise<Response> {
+    const { paginationOptions } = req;
+    const { status } = req.query;
+
+    const filteredStatus = status !== undefined ? status === 'true' : true;
+
+    const listLaboratories = container.resolve(ListLaboratoriesServices);
+    const data = await listLaboratories.execute({
+      status: filteredStatus,
+      paginationOptions,
+    });
+
+    return res.json(classToClass(data));
   }
 }
