@@ -1,4 +1,5 @@
 import AppError from '@shared/errors/AppError';
+import Laboratory from '../entities/Laboratory';
 import normalLaboratory from '../mocks/laboratories';
 import FakeLaboratoriesRepository from '../repositories/implementations/FakeLaboratoriesRepository';
 import CreateLaboratoryService from '../services/CreateLaboratoryService';
@@ -13,16 +14,31 @@ describe('create laboratory', () => {
   });
 
   it('should create a laboratory', async () => {
-    const laboratory = await createLaboratory.execute(normalLaboratory);
+    const laboratory = (await createLaboratory.execute([
+      normalLaboratory,
+    ])) as Laboratory;
 
     expect(laboratory.id).toBeTruthy();
   });
 
+  it('should create more than one laboratory', async () => {
+    const laboratories = (await createLaboratory.execute([
+      normalLaboratory,
+      {
+        ...normalLaboratory,
+        name: 'New Laboratory',
+      },
+    ])) as Laboratory[];
+
+    expect(laboratories[0].id).toBeTruthy();
+    expect(laboratories[1].id).toBeTruthy();
+  });
+
   it('should create a laboratory with same name', async () => {
-    await createLaboratory.execute(normalLaboratory);
+    await createLaboratory.execute([normalLaboratory]);
 
     await expect(
-      createLaboratory.execute(normalLaboratory),
+      createLaboratory.execute([normalLaboratory]),
     ).rejects.toBeInstanceOf(AppError);
   });
 });

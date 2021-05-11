@@ -10,10 +10,16 @@ const laboratoriesController = new LaboratoriesController();
 router.post(
   '/',
   celebrate({
-    [Segments.BODY]: {
-      name: Joi.string().required(),
-      address: Joi.string().required(),
-    },
+    [Segments.BODY]: Joi.alternatives(
+      Joi.array().items({
+        name: Joi.string().required(),
+        address: Joi.string().required(),
+      }),
+      {
+        name: Joi.string().required(),
+        address: Joi.string().required(),
+      },
+    ).required(),
   }),
   laboratoriesController.create,
 );

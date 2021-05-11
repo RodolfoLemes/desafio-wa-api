@@ -9,15 +9,13 @@ import UpdateLaboratoryService from '../services/UpdateLaboratoryService';
 
 export default class LaboratoriesController {
   async create(req: Request, res: Response): Promise<Response> {
-    const { name, address } = req.body;
+    if (!Array.isArray(req.body)) req.body = [req.body];
 
     const createLaboratory = container.resolve(CreateLaboratoryService);
-    const laboratory = await createLaboratory.execute({
-      name,
-      address,
-    });
 
-    return res.status(201).json(classToClass(laboratory));
+    const laboratories = await createLaboratory.execute(req.body);
+
+    return res.status(201).json(classToClass(laboratories));
   }
 
   async list(req: Request, res: Response): Promise<Response> {

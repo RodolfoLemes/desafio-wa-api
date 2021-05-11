@@ -15,15 +15,25 @@ export default class CreateLaboratoryService {
     private laboratoriesRepository: ILaboratoriesRepository,
   ) {}
 
-  public async execute({ name, address }: IRequest): Promise<Laboratory> {
-    if (await this.laboratoriesRepository.findByName(name))
-      throw new AppError('Laboratory with the same name is not allowed');
+  public async execute(
+    requests: IRequest[],
+  ): Promise<Laboratory[] | Laboratory> {
+    const laboratories = await Promise.all(
+      requests.map(async request => {
+        if (await this.laboratoriesRepository.findByName(request.name))
+          throw new AppError(
+            `Laboratory with the name ${request.name} is already in use`,
+          );
 
-    const laboratory = await this.laboratoriesRepository.create({
-      name,
-      address,
-    });
+        return this.laboratoriesRepository.create({
+          name: request.name,
+          address: request.address,
+        });
+      }),
+    );
 
-    return laboratory;
+    if (laboratories.length === 1) return laboratories[0];
+
+    return laboratories;
   }
 }
