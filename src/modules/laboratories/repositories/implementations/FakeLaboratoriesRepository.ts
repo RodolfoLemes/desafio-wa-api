@@ -28,6 +28,16 @@ class FakeLaboratoriesRepository implements ILaboratoriesRepository {
     return laboratory;
   }
 
+  public async remove(laboratory: Laboratory): Promise<Laboratory> {
+    const index = this.laboratories.findIndex(
+      findLaboratory => findLaboratory.id === laboratory.id,
+    );
+
+    this.laboratories.splice(index, 1);
+
+    return laboratory;
+  }
+
   public async findById(laboratoryId: string): Promise<Laboratory | undefined> {
     return this.laboratories.find(laboratory => laboratory.id === laboratoryId);
   }

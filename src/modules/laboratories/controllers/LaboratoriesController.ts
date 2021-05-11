@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateLaboratoryService from '../services/CreateLaboratoryService';
 import ListLaboratoriesServices from '../services/ListLaboratoriesServices';
+import RemoveLaboratoryService from '../services/RemoveLaboratoryService';
 import ShowLaboratoryService from '../services/ShowLaboratoryService';
 
 export default class LaboratoriesController {
@@ -42,5 +43,16 @@ export default class LaboratoriesController {
     });
 
     return res.json(classToClass(laboratory));
+  }
+
+  async remove(req: Request, res: Response): Promise<Response> {
+    const { laboratory_id: laboratoryId } = req.params;
+
+    const removedLaboratory = container.resolve(RemoveLaboratoryService);
+    await removedLaboratory.execute({
+      laboratoryId,
+    });
+
+    return res.status(204).send();
   }
 }

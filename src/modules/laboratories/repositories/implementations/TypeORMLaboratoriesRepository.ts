@@ -26,6 +26,10 @@ class TypeORMLaboratoriesRepository implements ILaboratoriesRepository {
     return this.ormRepository.save(laboratory);
   }
 
+  public async remove(laboratory: Laboratory): Promise<Laboratory> {
+    return this.ormRepository.remove(laboratory);
+  }
+
   public async findById(laboratoryId: string): Promise<Laboratory | undefined> {
     const laboratory = this.ormRepository.findOne({
       where: { id: laboratoryId },

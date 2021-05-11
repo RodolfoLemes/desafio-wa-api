@@ -41,4 +41,13 @@ router.get(
   laboratoriesController.show,
 );
 
+router.delete(
+  '/:laboratory_id',
+  celebrate({
+    [Segments.PARAMS]: {
+      laboratory_id: Joi.string().uuid({ version: 'uuidv4' }).required(),
+    },
+  }),
+  laboratoriesController.remove,
+);
 export default router;
