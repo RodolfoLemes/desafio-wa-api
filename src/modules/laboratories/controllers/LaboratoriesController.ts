@@ -5,6 +5,7 @@ import CreateLaboratoryService from '../services/CreateLaboratoryService';
 import ListLaboratoriesServices from '../services/ListLaboratoriesServices';
 import RemoveLaboratoryService from '../services/RemoveLaboratoryService';
 import ShowLaboratoryService from '../services/ShowLaboratoryService';
+import UpdateLaboratoryService from '../services/UpdateLaboratoryService';
 
 export default class LaboratoriesController {
   async create(req: Request, res: Response): Promise<Response> {
@@ -48,11 +49,23 @@ export default class LaboratoriesController {
   async remove(req: Request, res: Response): Promise<Response> {
     const { laboratory_id: laboratoryId } = req.params;
 
-    const removedLaboratory = container.resolve(RemoveLaboratoryService);
-    await removedLaboratory.execute({
+    const removeLaboratory = container.resolve(RemoveLaboratoryService);
+    await removeLaboratory.execute({
       laboratoryId,
     });
 
     return res.status(204).send();
+  }
+
+  async update(req: Request, res: Response): Promise<Response> {
+    const { laboratory_id: laboratoryId } = req.params;
+
+    const updateLaboratory = container.resolve(UpdateLaboratoryService);
+    const laboratory = await updateLaboratory.execute({
+      laboratoryId,
+      ...req.body,
+    });
+
+    return res.json(classToClass(laboratory));
   }
 }

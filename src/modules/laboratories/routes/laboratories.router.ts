@@ -50,4 +50,20 @@ router.delete(
   }),
   laboratoriesController.remove,
 );
+
+router.put(
+  '/:laboratory_id',
+  celebrate({
+    [Segments.PARAMS]: {
+      laboratory_id: Joi.string().uuid({ version: 'uuidv4' }).required(),
+    },
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      address: Joi.string().required(),
+      status: Joi.boolean().required(),
+    },
+  }),
+  laboratoriesController.update,
+);
+
 export default router;
