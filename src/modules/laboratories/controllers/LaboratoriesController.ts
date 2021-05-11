@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateLaboratoryService from '../services/CreateLaboratoryService';
 import ListLaboratoriesServices from '../services/ListLaboratoriesServices';
+import RemoveBatchLaboratoriesService from '../services/RemoveBatchLaboratoriesService';
 import RemoveLaboratoryService from '../services/RemoveLaboratoryService';
 import ShowLaboratoryService from '../services/ShowLaboratoryService';
 import UpdateLaboratoryService from '../services/UpdateLaboratoryService';
@@ -65,5 +66,14 @@ export default class LaboratoriesController {
     });
 
     return res.json(classToClass(laboratory));
+  }
+
+  async batchRemove(req: Request, res: Response): Promise<Response> {
+    const removeBatchLaboratories = container.resolve(
+      RemoveBatchLaboratoriesService,
+    );
+    await removeBatchLaboratories.execute(req.body);
+
+    return res.status(204).send();
   }
 }
