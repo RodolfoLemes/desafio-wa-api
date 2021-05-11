@@ -61,7 +61,7 @@ router.put(
       })
       .required(),
   }),
-  laboratoriesController.batchRemove,
+  laboratoriesController.batchUpdate,
 );
 
 router.get(
