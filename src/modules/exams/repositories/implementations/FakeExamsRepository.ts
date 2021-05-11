@@ -1,7 +1,10 @@
+import Pagination from '@modules/pagination';
+import IPaginationOptions from '@modules/pagination/interfaces/IPaginationOptions';
 import { v4 as uuidv4 } from 'uuid';
 import Exam from '../../entities/Exam';
 import IExamsRepository from '../IExamsRepository';
 import ICreateExamDTO from '../../dtos/ICreateExamDTO';
+import IFindAllByStatusAndType from '../../dtos/IFindAllByStatusAndTypeDTO';
 
 class FakeExamsRepository implements IExamsRepository {
   private exams: Exam[] = [];
@@ -26,6 +29,24 @@ class FakeExamsRepository implements IExamsRepository {
 
   public async findById(examId: string): Promise<Exam | undefined> {
     return this.exams.find(exam => exam.id === examId);
+  }
+
+  public async findAllByStatusAndType(
+    { status, type }: IFindAllByStatusAndType,
+    { limit, page }: IPaginationOptions,
+  ): Promise<Pagination<Exam>> {
+    const foundExams = this.exams.filter(
+      findWithdraw =>
+        findWithdraw.status === status && findWithdraw.type === type,
+    );
+
+    const total = foundExams.length;
+
+    return {
+      values: foundExams.slice((page - 1) * limit, page * limit),
+      total,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 }
 

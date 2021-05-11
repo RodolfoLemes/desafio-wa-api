@@ -1,6 +1,9 @@
+import IPaginationOptions from '@modules/pagination/interfaces/IPaginationOptions';
+import Pagination from '@modules/pagination';
 import { Repository, getRepository } from 'typeorm';
 import Exam from '../../entities/Exam';
 import ICreateExamDTO from '../../dtos/ICreateExamDTO';
+import IFindAllByStatusAndType from '../../dtos/IFindAllByStatusAndTypeDTO';
 import IExamsRepository from '../IExamsRepository';
 
 class TypeORMExamsRepository implements IExamsRepository {
@@ -28,6 +31,30 @@ class TypeORMExamsRepository implements IExamsRepository {
     const exam = this.ormRepository.findOne({ where: { id: examId } });
 
     return exam;
+  }
+
+  public async findAllByStatusAndType(
+    { status, type }: IFindAllByStatusAndType,
+    { limit, page }: IPaginationOptions,
+  ): Promise<Pagination<Exam>> {
+    let query = this.ormRepository
+      .createQueryBuilder('exams')
+      .where('exams.status = :status', { status });
+
+    if (type) query = query.andWhere('exams.type = :type', { type });
+
+    const values = await query
+      .take(limit)
+      .skip((page - 1) * limit)
+      .getMany();
+
+    const total = await query.getCount();
+
+    return {
+      values,
+      total,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 }
 
