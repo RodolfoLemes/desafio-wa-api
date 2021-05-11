@@ -8,7 +8,7 @@ let laboratoriesRepository: FakeLaboratoriesRepository;
 let showLaboratory: ShowLaboratoryService;
 let laboratory: Laboratory;
 
-describe('show laboratory', async () => {
+describe('show laboratory', () => {
   beforeEach(async () => {
     laboratoriesRepository = new FakeLaboratoriesRepository();
     showLaboratory = new ShowLaboratoryService(laboratoriesRepository);
