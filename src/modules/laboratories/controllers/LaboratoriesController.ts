@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateLaboratoryService from '../services/CreateLaboratoryService';
 import ListLaboratoriesServices from '../services/ListLaboratoriesServices';
+import ShowLaboratoryService from '../services/ShowLaboratoryService';
 
 export default class LaboratoriesController {
   async create(req: Request, res: Response): Promise<Response> {
@@ -30,5 +31,16 @@ export default class LaboratoriesController {
     });
 
     return res.json(classToClass(data));
+  }
+
+  async show(req: Request, res: Response): Promise<Response> {
+    const { laboratory_id: laboratoryId } = req.params;
+
+    const showLaboratory = container.resolve(ShowLaboratoryService);
+    const laboratory = await showLaboratory.execute({
+      laboratoryId,
+    });
+
+    return res.json(classToClass(laboratory));
   }
 }
