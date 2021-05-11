@@ -27,7 +27,7 @@ describe('remove batch laboratories', () => {
   it('should remove batch laboratories', async () => {
     await removeBatchLaboratories.execute(
       laboratories.map(laboratory => ({
-        laboratoryId: laboratory.id,
+        laboratory_id: laboratory.id,
       })),
     );
 
@@ -39,8 +39,8 @@ describe('remove batch laboratories', () => {
 
   it('should not remove batch laboratories if id does not exist', async () => {
     const requests = [
-      { laboratoryId: laboratories[0].id },
-      { laboratoryId: '1234' },
+      { laboratory_id: laboratories[0].id },
+      { laboratory_id: '1234' },
     ];
 
     await expect(

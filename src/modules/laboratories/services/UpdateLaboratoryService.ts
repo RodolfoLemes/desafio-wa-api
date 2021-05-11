@@ -27,6 +27,13 @@ export default class UpdateLaboratoryService {
 
     if (!laboratory) throw new AppError("Laboratory doesn't exist", 404);
 
+    const sameNameLaboratory = await this.laboratoriesRepository.findByName(
+      name,
+    );
+
+    if (sameNameLaboratory && sameNameLaboratory.id !== laboratory.id)
+      throw new AppError(`Laboratory with name ${name} already in use`);
+
     laboratory.name = name;
     laboratory.address = address;
     laboratory.status = status;

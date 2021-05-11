@@ -40,4 +40,20 @@ describe('show laboratory', () => {
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
+
+  it('should not update a laboratory if name already in use', async () => {
+    await laboratoriesRepository.create({
+      name: 'new name',
+      address: 'new address',
+    });
+
+    await expect(
+      updateLaboratory.execute({
+        laboratoryId: laboratory.id,
+        name: 'new name',
+        address: 'new address',
+        status: true,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });
