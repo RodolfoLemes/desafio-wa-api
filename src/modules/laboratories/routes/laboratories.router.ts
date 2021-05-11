@@ -49,6 +49,21 @@ router.delete(
   laboratoriesController.batchRemove,
 );
 
+router.put(
+  '/',
+  celebrate({
+    [Segments.BODY]: Joi.array()
+      .items({
+        laboratory_id: Joi.string().uuid({ version: 'uuidv4' }).required(),
+        name: Joi.string().required(),
+        address: Joi.string().required(),
+        status: Joi.boolean().required(),
+      })
+      .required(),
+  }),
+  laboratoriesController.batchRemove,
+);
+
 router.get(
   '/:laboratory_id',
   celebrate({
