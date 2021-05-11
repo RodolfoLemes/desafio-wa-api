@@ -16,7 +16,7 @@ export default class RemoveLaboratoryService {
   public async execute({ laboratoryId }: IRequest): Promise<void> {
     const laboratory = await this.laboratoriesRepository.findById(laboratoryId);
 
-    if (!laboratory) throw new AppError("Laboratory doesn't exist");
+    if (!laboratory) throw new AppError("Laboratory doesn't exist", 404);
 
     await this.laboratoriesRepository.remove(laboratory);
   }

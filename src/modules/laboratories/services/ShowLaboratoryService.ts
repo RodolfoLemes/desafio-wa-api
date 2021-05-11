@@ -17,7 +17,7 @@ export default class ShowLaboratoryService {
   public async execute({ laboratoryId }: IRequest): Promise<Laboratory> {
     const laboratory = await this.laboratoriesRepository.findById(laboratoryId);
 
-    if (!laboratory) throw new AppError("Laboratory doesn't exist");
+    if (!laboratory) throw new AppError("Laboratory doesn't exist", 404);
 
     return laboratory;
   }
