@@ -47,4 +47,19 @@ router.delete(
   examsController.remove,
 );
 
+router.put(
+  '/:exam_id',
+  celebrate({
+    [Segments.PARAMS]: {
+      exam_id: Joi.string().uuid({ version: 'uuidv4' }).required(),
+    },
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      type: Joi.string().valid('analise clinica', 'imagem').required(),
+      status: Joi.boolean().required(),
+    },
+  }),
+  examsController.update,
+);
+
 export default router;
