@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import Exam from '../entities/Exam';
 import { clinicalExam, imageExam } from '../mocks/exams';
 import FakeExamsRepository from '../repositories/implementations/FakeExamsRepository';
@@ -26,5 +27,13 @@ describe('create exams', () => {
     const exam = (await createExams.execute([clinicalExam])) as Exam;
 
     expect(exam.id).toBeTruthy();
+  });
+
+  it('should not create a exam if name already exist', async () => {
+    await createExams.execute([clinicalExam]);
+
+    await expect(createExams.execute([clinicalExam])).rejects.toBeInstanceOf(
+      AppError,
+    );
   });
 });

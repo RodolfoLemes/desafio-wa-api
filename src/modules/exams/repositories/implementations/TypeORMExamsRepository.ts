@@ -38,6 +38,12 @@ class TypeORMExamsRepository implements IExamsRepository {
     return exam;
   }
 
+  public async findByName(name: string): Promise<Exam | undefined> {
+    const exam = this.ormRepository.findOne({ where: { name } });
+
+    return exam;
+  }
+
   public async findAllByStatusAndType(
     { status, type }: IFindAllByStatusAndType,
     { limit, page }: IPaginationOptions,

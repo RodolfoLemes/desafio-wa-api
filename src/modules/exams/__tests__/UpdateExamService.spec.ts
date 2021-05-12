@@ -40,4 +40,20 @@ describe('update exam', () => {
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
+
+  it('should not update a laboratory if name already in use', async () => {
+    await examsRepository.create({
+      name: 'new name',
+      type: 'imagem',
+    });
+
+    await expect(
+      updateExam.execute({
+        examId: exam.id,
+        name: 'new name',
+        type: 'imagem',
+        status: true,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });

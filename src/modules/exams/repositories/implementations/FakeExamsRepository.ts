@@ -44,6 +44,10 @@ class FakeExamsRepository implements IExamsRepository {
     return this.exams.find(exam => exam.id === examId);
   }
 
+  public async findByName(name: string): Promise<Exam | undefined> {
+    return this.exams.find(exam => exam.name === name);
+  }
+
   public async findAllByStatusAndType(
     { status, type }: IFindAllByStatusAndType,
     { limit, page }: IPaginationOptions,
