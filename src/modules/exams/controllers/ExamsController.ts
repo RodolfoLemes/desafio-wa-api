@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateExamsService from '../services/CreateExamsService';
 import ListExamsService from '../services/ListExamsService';
+import RemoveExamService from '../services/RemoveExamService';
 
 export default class ExamsController {
   async create(req: Request, res: Response): Promise<Response> {
@@ -32,5 +33,16 @@ export default class ExamsController {
     });
 
     return res.json(classToClass(data));
+  }
+
+  async remove(req: Request, res: Response): Promise<Response> {
+    const { exam_id: examId } = req.params;
+
+    const removeExam = container.resolve(RemoveExamService);
+    await removeExam.execute({
+      examId,
+    });
+
+    return res.status(204).send();
   }
 }

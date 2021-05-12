@@ -27,6 +27,10 @@ class TypeORMExamsRepository implements IExamsRepository {
     return this.ormRepository.save(exam);
   }
 
+  public async remove(exam: Exam): Promise<Exam> {
+    return this.ormRepository.remove(exam);
+  }
+
   public async findById(examId: string): Promise<Exam | undefined> {
     const exam = this.ormRepository.findOne({ where: { id: examId } });
 

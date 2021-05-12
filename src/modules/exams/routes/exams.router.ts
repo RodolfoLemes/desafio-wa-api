@@ -37,4 +37,14 @@ router.get(
   examsController.list,
 );
 
+router.delete(
+  '/:exam_id',
+  celebrate({
+    [Segments.PARAMS]: {
+      exam_id: Joi.string().uuid({ version: 'uuidv4' }).required(),
+    },
+  }),
+  examsController.remove,
+);
+
 export default router;

@@ -27,6 +27,14 @@ class FakeExamsRepository implements IExamsRepository {
     return exam;
   }
 
+  public async remove(exam: Exam): Promise<Exam> {
+    const index = this.exams.findIndex(findExam => findExam.id === exam.id);
+
+    this.exams.splice(index, 1);
+
+    return exam;
+  }
+
   public async findById(examId: string): Promise<Exam | undefined> {
     return this.exams.find(exam => exam.id === examId);
   }
