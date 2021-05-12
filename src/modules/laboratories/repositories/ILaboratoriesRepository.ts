@@ -2,6 +2,7 @@ import IPaginationOptions from '@modules/pagination/interfaces/IPaginationOption
 import Pagination from '@modules/pagination';
 import Laboratory from '../entities/Laboratory';
 import ICreateLaboratoryDTO from '../dtos/ICreateLaboratoryDTO';
+import IFindByIdAndExamDTO from '../dtos/IFindByIdAndExamDTO';
 
 export default interface ILaboratoriesRepository {
   create(data: ICreateLaboratoryDTO): Promise<Laboratory>;
@@ -13,4 +14,5 @@ export default interface ILaboratoriesRepository {
     status: boolean,
     paginationOptions: IPaginationOptions,
   ): Promise<Pagination<Laboratory>>;
+  findByIdAndExam(data: IFindByIdAndExamDTO): Promise<Laboratory | undefined>;
 }

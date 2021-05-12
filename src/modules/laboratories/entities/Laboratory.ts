@@ -23,7 +23,7 @@ class Laboratory {
   @Column({ default: false })
   status: boolean;
 
-  @ManyToMany(() => Exam, { eager: true })
+  @ManyToMany(() => Exam, exam => exam.laboratories, { eager: true })
   @JoinTable()
   exams: Exam[];
 

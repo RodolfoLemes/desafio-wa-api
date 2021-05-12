@@ -12,7 +12,12 @@ class FakeExamsRepository implements IExamsRepository {
   public async create(data: ICreateExamDTO): Promise<Exam> {
     const exam = new Exam();
 
-    Object.assign(exam, { ...data, id: uuidv4(), status: false });
+    Object.assign(exam, {
+      ...data,
+      id: uuidv4(),
+      status: false,
+      laboratories: [],
+    });
 
     this.exams.push(exam);
 

@@ -16,6 +16,7 @@ class TypeORMExamsRepository implements IExamsRepository {
   public async create(data: ICreateExamDTO): Promise<Exam> {
     const exam = this.ormRepository.create({
       ...data,
+      laboratories: [],
     });
 
     await this.ormRepository.save(exam);

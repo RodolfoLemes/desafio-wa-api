@@ -4,6 +4,7 @@ import { Repository, getRepository } from 'typeorm';
 import Laboratory from '../../entities/Laboratory';
 import ICreateLaboratoryDTO from '../../dtos/ICreateLaboratoryDTO';
 import ILaboratoriesRepository from '../ILaboratoriesRepository';
+import IFindByIdAndExamDTO from '../../dtos/IFindByIdAndExamDTO';
 
 class TypeORMLaboratoriesRepository implements ILaboratoriesRepository {
   private ormRepository: Repository<Laboratory>;
@@ -15,6 +16,7 @@ class TypeORMLaboratoriesRepository implements ILaboratoriesRepository {
   public async create(data: ICreateLaboratoryDTO): Promise<Laboratory> {
     const laboratory = this.ormRepository.create({
       ...data,
+      exams: [],
     });
 
     await this.ormRepository.save(laboratory);
@@ -66,6 +68,20 @@ class TypeORMLaboratoriesRepository implements ILaboratoriesRepository {
       total,
       totalPages: Math.ceil(total / limit),
     };
+  }
+
+  public async findByIdAndExam({
+    laboratoryId,
+    examId,
+  }: IFindByIdAndExamDTO): Promise<Laboratory | undefined> {
+    const laboratory = await this.ormRepository
+      .createQueryBuilder('laboratories')
+      .where('laboratories.id = :laboratoryId', { laboratoryId })
+      .innerJoinAndSelect('laboratories.exams', 'exams')
+      .andWhere('exams.id = :examId', { examId })
+      .getOne();
+
+    return laboratory;
   }
 }
 

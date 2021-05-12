@@ -1,6 +1,7 @@
 import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import AssociateExamToLaboratoryService from '../services/AssociateExamToLaboratoryService';
 import CreateLaboratoryService from '../services/CreateLaboratoryService';
 import ListLaboratoriesServices from '../services/ListLaboratoriesServices';
 import RemoveBatchLaboratoriesService from '../services/RemoveBatchLaboratoriesService';
@@ -86,5 +87,19 @@ export default class LaboratoriesController {
     const laboratories = await updateBatchLaboratories.execute(req.body);
 
     return res.json(classToClass(laboratories));
+  }
+
+  async associate(req: Request, res: Response): Promise<Response> {
+    const { laboratory_id: laboratoryId, exam_id: examId } = req.params;
+
+    const associateExamToLaboratory = container.resolve(
+      AssociateExamToLaboratoryService,
+    );
+    await associateExamToLaboratory.execute({
+      laboratoryId,
+      examId,
+    });
+
+    return res.status(204).send();
   }
 }

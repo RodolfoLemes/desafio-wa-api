@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Laboratory from '../../entities/Laboratory';
 import ILaboratoriesRepository from '../ILaboratoriesRepository';
 import ICreateLaboratoryDTO from '../../dtos/ICreateLaboratoryDTO';
+import IFindByIdAndExamDTO from '../../dtos/IFindByIdAndExamDTO';
 
 class FakeLaboratoriesRepository implements ILaboratoriesRepository {
   private laboratories: Laboratory[] = [];
@@ -11,7 +12,12 @@ class FakeLaboratoriesRepository implements ILaboratoriesRepository {
   public async create(data: ICreateLaboratoryDTO): Promise<Laboratory> {
     const laboratory = new Laboratory();
 
-    Object.assign(laboratory, { ...data, id: uuidv4(), status: false });
+    Object.assign(laboratory, {
+      ...data,
+      id: uuidv4(),
+      status: false,
+      exams: [],
+    });
 
     this.laboratories.push(laboratory);
 
@@ -61,6 +67,21 @@ class FakeLaboratoriesRepository implements ILaboratoriesRepository {
       total,
       totalPages: Math.ceil(total / limit),
     };
+  }
+
+  public async findByIdAndExam({
+    laboratoryId,
+    examId,
+  }: IFindByIdAndExamDTO): Promise<Laboratory | undefined> {
+    const laboratory = await this.laboratories.find(
+      foundLaboratory => foundLaboratory.id === laboratoryId,
+    );
+
+    if (!laboratory) return undefined;
+
+    return laboratory.exams.find(foundExam => foundExam.id === examId)
+      ? laboratory
+      : undefined;
   }
 }
 
