@@ -34,12 +34,15 @@ class TypeORMExamsRepository implements IExamsRepository {
 
   public async findById(examId: string): Promise<Exam | undefined> {
     const exam = this.ormRepository.findOne({ where: { id: examId } });
-
     return exam;
   }
 
   public async findByName(name: string): Promise<Exam | undefined> {
-    const exam = this.ormRepository.findOne({ where: { name } });
+    const exam = await this.ormRepository
+      .createQueryBuilder('exams')
+      .where('exams.name = :name', { name })
+      .innerJoinAndSelect('exams.laboratories', 'laboratories')
+      .getOne();
 
     return exam;
   }

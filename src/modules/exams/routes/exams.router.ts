@@ -62,4 +62,13 @@ router.put(
   examsController.update,
 );
 
+router.get(
+  '/:name',
+  celebrate({
+    [Segments.PARAMS]: {
+      name: Joi.string().required(),
+    },
+  }),
+  examsController.show,
+);
 export default router;

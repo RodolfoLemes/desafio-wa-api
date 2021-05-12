@@ -4,6 +4,7 @@ import { container } from 'tsyringe';
 import CreateExamsService from '../services/CreateExamsService';
 import ListExamsService from '../services/ListExamsService';
 import RemoveExamService from '../services/RemoveExamService';
+import ShowExamService from '../services/ShowExamService';
 import UpdateExamService from '../services/UpdateExamService';
 
 export default class ExamsController {
@@ -57,6 +58,17 @@ export default class ExamsController {
       name,
       type,
       status,
+    });
+
+    return res.json(classToClass(exam));
+  }
+
+  async show(req: Request, res: Response): Promise<Response> {
+    const { name } = req.params;
+
+    const showExam = container.resolve(ShowExamService);
+    const exam = await showExam.execute({
+      name,
     });
 
     return res.json(classToClass(exam));
