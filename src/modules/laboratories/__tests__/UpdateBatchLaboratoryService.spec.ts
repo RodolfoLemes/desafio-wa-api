@@ -44,7 +44,7 @@ describe('update batch laboratories', () => {
     expect(updatedLaboratories[1].name).toEqual('new name 2');
   });
 
-  it('should not remove batch laboratories if id does not exist', async () => {
+  it('should not update batch laboratories if id does not exist', async () => {
     await expect(
       updateBatchLaboratories.execute([
         {
@@ -63,7 +63,7 @@ describe('update batch laboratories', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not remove batch laboratories if name already in use', async () => {
+  it('should not update batch laboratories if name already in use', async () => {
     await expect(
       updateBatchLaboratories.execute([
         {
