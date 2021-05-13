@@ -44,6 +44,14 @@ yarn start                   ## start server
   - `TYPEORM_DATABASE`;
   - `TYPEORM_PORT`.
 
+## Storage
+
+- No código existe a presença de scripts para realização do storage, porém, não a implementação, pode ser utilizado para implementação futuras.
+
+## Hash
+
+- De forma similar ao Storage, pode ser utilizado para implementações futuras.
+
 # Documentação da API
 
 - [RESTful API Reference (insomnia)](docs/insomnia.json)
