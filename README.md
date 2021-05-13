@@ -34,6 +34,9 @@ yarn typeorm migration:run   ## run migrations
 yarn start                   ## start server
 ```
 
+- Já existe uma implementação em produção, na plataforma `Heroku`:
+  - [desafio-wa-api](https://desafio-wa-api.herokuapp.com/);
+
 ## Banco de Dados
 
 - Adicione as configurações nas variáveis de ambiente do seu banco de dados. De preferência, utilizado PostgreSQL, pois foi desenvolvido nele a API:
