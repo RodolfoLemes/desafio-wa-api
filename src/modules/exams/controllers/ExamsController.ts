@@ -6,6 +6,7 @@ import ListExamsService from '../services/ListExamsService';
 import RemoveBatchExamsService from '../services/RemoveBatchExamsService';
 import RemoveExamService from '../services/RemoveExamService';
 import ShowExamService from '../services/ShowExamService';
+import UpdateBatchExamsService from '../services/UpdateBatchExamsService';
 import UpdateExamService from '../services/UpdateExamService';
 
 export default class ExamsController {
@@ -80,5 +81,13 @@ export default class ExamsController {
     await removeBatchExams.execute(req.body);
 
     return res.status(204).send();
+  }
+
+  async batchUpdate(req: Request, res: Response): Promise<Response> {
+    const updateBatchExams = container.resolve(UpdateBatchExamsService);
+
+    const laboratories = await updateBatchExams.execute(req.body);
+
+    return res.json(classToClass(laboratories));
   }
 }

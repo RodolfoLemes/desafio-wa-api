@@ -84,4 +84,19 @@ router.delete(
   examsController.batchRemove,
 );
 
+router.put(
+  '/',
+  celebrate({
+    [Segments.BODY]: Joi.array()
+      .items({
+        exam_id: Joi.string().uuid({ version: 'uuidv4' }).required(),
+        name: Joi.string().required(),
+        type: Joi.string().valid('analise clinica', 'imagem').required(),
+        status: Joi.boolean().required(),
+      })
+      .required(),
+  }),
+  examsController.batchUpdate,
+);
+
 export default router;
