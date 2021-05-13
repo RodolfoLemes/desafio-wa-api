@@ -5,6 +5,7 @@ import Laboratory from '../../entities/Laboratory';
 import ILaboratoriesRepository from '../ILaboratoriesRepository';
 import ICreateLaboratoryDTO from '../../dtos/ICreateLaboratoryDTO';
 import IFindByIdAndExamDTO from '../../dtos/IFindByIdAndExamDTO';
+import IRemoveExamDTO from '../../dtos/IRemoveExamDTO';
 
 class FakeLaboratoriesRepository implements ILaboratoriesRepository {
   private laboratories: Laboratory[] = [];
@@ -42,6 +43,23 @@ class FakeLaboratoriesRepository implements ILaboratoriesRepository {
     this.laboratories.splice(index, 1);
 
     return laboratory;
+  }
+
+  public async removeExam({
+    laboratoryId,
+    examId,
+  }: IRemoveExamDTO): Promise<void> {
+    this.laboratories = this.laboratories.map(foundLaboratory => {
+      if (foundLaboratory.id !== laboratoryId) return foundLaboratory;
+
+      const index = foundLaboratory.exams.findIndex(
+        findExam => findExam.id === examId,
+      );
+
+      foundLaboratory.exams.splice(index, 1);
+
+      return foundLaboratory;
+    });
   }
 
   public async findById(laboratoryId: string): Promise<Laboratory | undefined> {

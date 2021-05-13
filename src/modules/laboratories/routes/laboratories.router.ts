@@ -110,4 +110,15 @@ router.post(
   laboratoriesController.associate,
 );
 
+router.delete(
+  '/:laboratory_id/exam/:exam_id',
+  celebrate({
+    [Segments.PARAMS]: {
+      laboratory_id: Joi.string().uuid({ version: 'uuidv4' }).required(),
+      exam_id: Joi.string().uuid({ version: 'uuidv4' }).required(),
+    },
+  }),
+  laboratoriesController.disassociate,
+);
+
 export default router;

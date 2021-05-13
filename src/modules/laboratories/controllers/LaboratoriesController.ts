@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import AssociateExamToLaboratoryService from '../services/AssociateExamToLaboratoryService';
 import CreateLaboratoryService from '../services/CreateLaboratoryService';
+import DisassociateExamToLaboratoryService from '../services/DisassociateExamToLaboratoryService';
 import ListLaboratoriesServices from '../services/ListLaboratoriesServices';
 import RemoveBatchLaboratoriesService from '../services/RemoveBatchLaboratoriesService';
 import RemoveLaboratoryService from '../services/RemoveLaboratoryService';
@@ -96,6 +97,20 @@ export default class LaboratoriesController {
       AssociateExamToLaboratoryService,
     );
     await associateExamToLaboratory.execute({
+      laboratoryId,
+      examId,
+    });
+
+    return res.status(204).send();
+  }
+
+  async disassociate(req: Request, res: Response): Promise<Response> {
+    const { laboratory_id: laboratoryId, exam_id: examId } = req.params;
+
+    const disassociateExamToLaboratory = container.resolve(
+      DisassociateExamToLaboratoryService,
+    );
+    await disassociateExamToLaboratory.execute({
       laboratoryId,
       examId,
     });

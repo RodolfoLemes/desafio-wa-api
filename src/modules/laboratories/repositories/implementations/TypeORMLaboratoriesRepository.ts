@@ -2,9 +2,10 @@ import IPaginationOptions from '@modules/pagination/interfaces/IPaginationOption
 import Pagination from '@modules/pagination';
 import { Repository, getRepository } from 'typeorm';
 import Laboratory from '../../entities/Laboratory';
-import ICreateLaboratoryDTO from '../../dtos/ICreateLaboratoryDTO';
 import ILaboratoriesRepository from '../ILaboratoriesRepository';
+import ICreateLaboratoryDTO from '../../dtos/ICreateLaboratoryDTO';
 import IFindByIdAndExamDTO from '../../dtos/IFindByIdAndExamDTO';
+import IRemoveExamDTO from '../../dtos/IRemoveExamDTO';
 
 class TypeORMLaboratoriesRepository implements ILaboratoriesRepository {
   private ormRepository: Repository<Laboratory>;
@@ -30,6 +31,17 @@ class TypeORMLaboratoriesRepository implements ILaboratoriesRepository {
 
   public async remove(laboratory: Laboratory): Promise<Laboratory> {
     return this.ormRepository.remove(laboratory);
+  }
+
+  public async removeExam({
+    laboratoryId,
+    examId,
+  }: IRemoveExamDTO): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder()
+      .relation(Laboratory, 'exams')
+      .of({ id: laboratoryId })
+      .remove({ id: examId });
   }
 
   public async findById(laboratoryId: string): Promise<Laboratory | undefined> {
