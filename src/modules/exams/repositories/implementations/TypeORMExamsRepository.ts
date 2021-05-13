@@ -41,7 +41,7 @@ class TypeORMExamsRepository implements IExamsRepository {
     const exam = await this.ormRepository
       .createQueryBuilder('exams')
       .where('exams.name = :name', { name })
-      .innerJoinAndSelect('exams.laboratories', 'laboratories')
+      .leftJoinAndSelect('exams.laboratories', 'laboratories')
       .getOne();
 
     return exam;
