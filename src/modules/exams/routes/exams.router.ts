@@ -71,4 +71,17 @@ router.get(
   }),
   examsController.show,
 );
+
+router.delete(
+  '/',
+  celebrate({
+    [Segments.BODY]: Joi.array()
+      .items({
+        exam_id: Joi.string().uuid({ version: 'uuidv4' }).required(),
+      })
+      .required(),
+  }),
+  examsController.batchRemove,
+);
+
 export default router;

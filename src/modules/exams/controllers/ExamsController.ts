@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateExamsService from '../services/CreateExamsService';
 import ListExamsService from '../services/ListExamsService';
+import RemoveBatchExamsService from '../services/RemoveBatchExamsService';
 import RemoveExamService from '../services/RemoveExamService';
 import ShowExamService from '../services/ShowExamService';
 import UpdateExamService from '../services/UpdateExamService';
@@ -72,5 +73,12 @@ export default class ExamsController {
     });
 
     return res.json(classToClass(exam));
+  }
+
+  async batchRemove(req: Request, res: Response): Promise<Response> {
+    const removeBatchExams = container.resolve(RemoveBatchExamsService);
+    await removeBatchExams.execute(req.body);
+
+    return res.status(204).send();
   }
 }
